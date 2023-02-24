@@ -1,9 +1,16 @@
 package com.cos.photogramstart.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -38,7 +45,20 @@ public class AuthController {
 	input 태그에 임시 토큰값이 생기게 됨
 	정상적인 사용자인지 비정상적인 사용인지 구분하기 위해서*/
 	@PostMapping("/auth/signup")
-	public String signup(SignupDto signupDto) { // key=value (x-www-form-urlencoded)
+	public String signup(@Valid SignupDto signupDto, BindingResult bindingResult) { // key=value (x-www-form-urlencoded)
+		if(bindingResult.hasErrors()) {
+			Map<String, String> errorMap = new HashMap<>();
+			
+			for(FieldError error : bindingResult.getFieldErrors()) {
+				errorMap.put(error.getField(), error.getDefaultMessage());
+			
+				System.out.println("=====================");
+				System.out.println(error.getDefaultMessage());
+				System.out.println("=====================");
+			}
+		}
+		
+		
 		log.info(signupDto.toString());
 		// User <- SignupDto
 		User user = signupDto.toEntity();
@@ -47,5 +67,9 @@ public class AuthController {
 		System.out.println(userEntity);
 		return "auth/signin"; // 회원가입 성공시
 	}
-	
+	 
 }
+/*
+ * 전처리는 validation으로 후처리는 exceptionhandler로 처리함
+ * AOP를 지향
+ * */
