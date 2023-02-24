@@ -13,8 +13,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.handler.ex.CustomValidationException;
 import com.cos.photogramstart.service.AuthService;
 import com.cos.photogramstart.web.dto.auth.SignupDto;
 
@@ -44,28 +46,30 @@ public class AuthController {
 	시큐리티 CSRF 토큰을 검사하게 됨
 	input 태그에 임시 토큰값이 생기게 됨
 	정상적인 사용자인지 비정상적인 사용인지 구분하기 위해서*/
-	@PostMapping("/auth/signup")
+	@PostMapping("/auth/signup") // ResponseBody가 있어 데이터를 응답
 	public String signup(@Valid SignupDto signupDto, BindingResult bindingResult) { // key=value (x-www-form-urlencoded)
-		if(bindingResult.hasErrors()) {
+		if(bindingResult.hasErrors()) { // front, back에서 둘 다 막아야함
 			Map<String, String> errorMap = new HashMap<>();
 			
 			for(FieldError error : bindingResult.getFieldErrors()) {
 				errorMap.put(error.getField(), error.getDefaultMessage());
-			
-				System.out.println("=====================");
+				System.out.println("========================");
 				System.out.println(error.getDefaultMessage());
-				System.out.println("=====================");
+				System.out.println("========================");
 			}
+			throw new CustomValidationException("유효성 검사 실패함", errorMap);
+		}else {
+			log.info(signupDto.toString());
+			// User <- SignupDto
+			User user = signupDto.toEntity();
+			log.info(user.toString());
+			User userEntity = authService.회원가입(user);
+			System.out.println(userEntity);
+			return "auth/signin"; // 회원가입 성공시
 		}
 		
 		
-		log.info(signupDto.toString());
-		// User <- SignupDto
-		User user = signupDto.toEntity();
-		log.info(user.toString());
-		User userEntity = authService.회원가입(user);
-		System.out.println(userEntity);
-		return "auth/signin"; // 회원가입 성공시
+		
 	}
 	 
 }
