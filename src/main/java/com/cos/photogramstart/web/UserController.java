@@ -20,7 +20,7 @@ public class UserController {
 	@GetMapping("/user/{id}/update")
 	public String update(@PathVariable int id, @AuthenticationPrincipal PrincipalDetails principalDetails) { // 그래서 어노테이션을 만들어줌
 		// session -> securityContextholder -> Authentication -> PrincipalDetails(UserDetails)
-		System.out.println("세션 정보: "+principalDetails.getUser());
+		//System.out.println("세션 정보: "+principalDetails.getUser());
 		/*
 		 * Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		 * PrincipalDetails mPrincipalDetails = (PrincipalDetails) auth.getPrincipal();
