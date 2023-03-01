@@ -49,7 +49,7 @@ public class User {
 	
 	// 나는 연관관계의 주인이 아니다. 그러므로 테이블에 컬럼을 만들지마.
 	// User를 select할 때 해당 User id로 등록된 image들을 다 가져와
-	// Lazy = User를 select할 때 해당 User id로 등록된 image들을 가져오지마 - 대신 getImages() 함수가 호출될 때 가져와
+	// Lazy = User를 select할 때 해당 User id로 등록된 image들을 가져오지마 - 대신 getImages() 함수의 image들이 호출될 때 가져와
 	// Eager = User를 select할 때 해당 User id로 등록된 image들을 전부 Join해서 가져와!!
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY) 
 	private List<Image> images; // 데이터베이스는 하나밖에 못넣는데 리스트로 넣으니 헷갈려할 수 있음

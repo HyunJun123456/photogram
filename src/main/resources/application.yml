@@ -19,7 +19,7 @@ spring:
     password: cos1234
       
   jpa:
-    open-in-view: true
+    open-in-view: true # 세션이 서비스 종료 후 닫히게 됨 -> true로 설정하면 view단까지 세션을 오픈함
     hibernate:
       ddl-auto: update #create update none
       naming:

@@ -18,13 +18,12 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	@Transactional(readOnly = true) // select에서는 readOnly = true로 걸어주면 됨 (읽기 전용 데이터라고 생각하면 됨)
 	public User 회원프로필(int userId) {
 		// SELECT * FROM image WHERE userId = :userId;
 		User userEntity = userRepository.findById(userId).orElseThrow(()->{
 			throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
 		});
-		System.out.println("========================================");
-		userEntity.getImages().get(0);
 		return userEntity;
 	}
 	
