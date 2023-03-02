@@ -9,6 +9,7 @@ import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomException;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
+import com.cos.photogramstart.web.dto.user.UserProfileDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,12 +20,16 @@ public class UserService {
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Transactional(readOnly = true) // select에서는 readOnly = true로 걸어주면 됨 (읽기 전용 데이터라고 생각하면 됨)
-	public User 회원프로필(int userId) {
+	public UserProfileDto 회원프로필(int pageUserId, int principalId) {
+		UserProfileDto dto = new UserProfileDto();
 		// SELECT * FROM image WHERE userId = :userId;
-		User userEntity = userRepository.findById(userId).orElseThrow(()->{
+		User userEntity = userRepository.findById(pageUserId).orElseThrow(()->{
 			throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
 		});
-		return userEntity;
+		dto.setUser(userEntity);
+		dto.setPageOwnerStatus(pageUserId == principalId); // 1은 페이지 주인, -1은 주인이 아님
+		dto.setImageCount(userEntity.getImages().size());
+		return dto;
 	}
 	
 	

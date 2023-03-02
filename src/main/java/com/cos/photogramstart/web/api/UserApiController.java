@@ -37,15 +37,13 @@ public class UserApiController {
 			
 			for(FieldError error : bindingResult.getFieldErrors()) {
 				errorMap.put(error.getField(), error.getDefaultMessage());
-				System.out.println("========================");
-				System.out.println(error.getDefaultMessage());
-				System.out.println("========================");
 			}
 			throw new CustomValidationApiException("유효성 검사 실패함", errorMap);
 		}else {
 			User userEntity = userService.회원수정(id, userUpdateDto.toEntity());
 			principalDetails.setUser(userEntity); // 세션 정보 변경
 			return new CMRespDto<>(1, "회원수정완료", userEntity); // 생성자에 전달해야 하는 인자 필요
+			// 응답시에 userEntity의 모든 getter 함수가 호출되고 JSON으로 파싱하여 응답한다.
 		}
 
 	}
