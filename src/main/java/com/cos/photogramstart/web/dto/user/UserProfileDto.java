@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class UserProfileDto {
 	private boolean pageOwnerStatus; // is가 접두사에 붙으면 에러가 생김
 	private int imageCount;
+	private boolean subscribeStatus;
+	private int subscribeCount;
 	private User user;
 	
 }

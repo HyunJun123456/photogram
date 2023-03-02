@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cos.photogramstart.domain.subscribe.SubscribeRepository;
 import com.cos.photogramstart.domain.user.User;
 import com.cos.photogramstart.domain.user.UserRepository;
 import com.cos.photogramstart.handler.ex.CustomException;
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UserRepository userRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+	private final SubscribeRepository subscribeRepository;
 	@Transactional(readOnly = true) // select에서는 readOnly = true로 걸어주면 됨 (읽기 전용 데이터라고 생각하면 됨)
 	public UserProfileDto 회원프로필(int pageUserId, int principalId) {
 		UserProfileDto dto = new UserProfileDto();
@@ -29,6 +30,10 @@ public class UserService {
 		dto.setUser(userEntity);
 		dto.setPageOwnerStatus(pageUserId == principalId); // 1은 페이지 주인, -1은 주인이 아님
 		dto.setImageCount(userEntity.getImages().size());
+		int subscribeStatus = subscribeRepository.mSubscribeStatus(principalId, pageUserId);
+		int subscribeCount = subscribeRepository.mSubscribeCount(pageUserId);
+		dto.setSubscribeStatus(subscribeStatus == 1);
+		dto.setSubscribeCount(subscribeCount);
 		return dto;
 	}
 	
