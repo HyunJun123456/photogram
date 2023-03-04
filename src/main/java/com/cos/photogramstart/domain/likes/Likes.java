@@ -15,6 +15,7 @@ import javax.persistence.UniqueConstraint;
 import com.cos.photogramstart.domain.image.Image;
 import com.cos.photogramstart.domain.subscribe.Subscribe;
 import com.cos.photogramstart.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,7 @@ public class Likes { // N
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	// 무한 참조됨
 	@JoinColumn(name = "imageId")
 	@ManyToOne // default가 Eager 전략
 	private Image image; // 1 

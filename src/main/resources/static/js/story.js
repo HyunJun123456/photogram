@@ -27,6 +27,7 @@ function storyLoad() {
 storyLoad();
 function getStoryItem(image) { // 얘 자체가 그림
 	let item = `<div class="story-list__item">
+
 	<div class="sl__item__header">
 		<div>
 			<img class="profile-image" src="/upload/${image.user.profileImageUrl}"
@@ -42,8 +43,13 @@ function getStoryItem(image) { // 얘 자체가 그림
 	<div class="sl__item__contents">
 		<div class="sl__item__contents__icon">
 
-			<button>
-				<i class="fas fa-heart active" id="storyLikeIcon-${image.id}" onclick="toggleLike(${image.id})"></i>
+			<button>`;
+				if(image.likeStatus){
+					item += `<i class="fas fa-heart active" id="storyLikeIcon-${image.id}" onclick="toggleLike(${image.id})"></i>`
+				}else{
+					item += `<i class="far fa-heart" id="storyLikeIcon-${image.id}" onclick="toggleLike(${image.id})"></i>`
+				}
+		item += `
 			</button>
 		</div>
 
@@ -81,7 +87,7 @@ return item;
 // (2) 스토리 스크롤 페이징하기
 $(window).scroll(() => {	
 	let checkNum = $(window).scrollTop() - ( $(document).height() - $(window).height() );
-	if(checkNum < 1 && checkNum > -1){
+	if(checkNum < 10 && checkNum > -10){
 		page++;
 		storyLoad();
 	}
