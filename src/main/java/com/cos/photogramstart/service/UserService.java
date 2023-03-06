@@ -27,13 +27,22 @@ public class UserService {
 		User userEntity = userRepository.findById(pageUserId).orElseThrow(()->{
 			throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
 		});
+		
 		dto.setUser(userEntity);
 		dto.setPageOwnerStatus(pageUserId == principalId); // 1은 페이지 주인, -1은 주인이 아님
 		dto.setImageCount(userEntity.getImages().size());
+		
 		int subscribeStatus = subscribeRepository.mSubscribeStatus(principalId, pageUserId);
 		int subscribeCount = subscribeRepository.mSubscribeCount(pageUserId);
+		
 		dto.setSubscribeStatus(subscribeStatus == 1);
 		dto.setSubscribeCount(subscribeCount);
+		
+		// 좋아요 카운트 추가하기
+		userEntity.getImages().forEach((image)->{
+			image.setLikeCount(image.getLikes().size());
+		});
+		
 		return dto;
 	}
 	
