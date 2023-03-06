@@ -40,8 +40,8 @@ public class Image { // N, 1
 	private User user; // 1, 1
 	
 	// 이미지 좋아요
-	@OneToMany(mappedBy = "image")
 	@JsonIgnoreProperties({"image"}) 
+	@OneToMany(mappedBy = "image")
 	private List<Likes> likes; // Likes에 내부에 있는 image를 호출하지 않게 함
 	// 댓글 
 	
@@ -49,6 +49,9 @@ public class Image { // N, 1
 	
 	@Transient // javax.persistent DB에 칼럼이 만들어지지 않는다.
 	private boolean likeStatus;
+	
+	@Transient
+	private int likeCount;
 	
 	@PrePersist 
 	public void createDate() {
