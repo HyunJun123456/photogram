@@ -2,6 +2,8 @@
 function update(userId, event) {
 	event.preventDefault(); // 폼태그 액션을 막기!!
 	let data = $("#profileUpdate").serialize(); // form 태그가 가지고 있는 input 값들
+	// FormData: 파일 업로드를 포함한 다양한 데이터 타입을 전송할 수 있습니다.
+	// serialize: 파일 업로드를 지원하지 않으며, 문자열 데이터만 전송할 수 있습니다.
 	console.log(data);
 	
 	$.ajax({
