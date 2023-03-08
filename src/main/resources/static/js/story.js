@@ -59,19 +59,20 @@ function getStoryItem(image) { // 얘 자체가 그림
 			<p>${image.caption}</p>
 		</div>
 
-		<div id="storyCommentList-${image.id}">
-
-			<div class="sl__item__contents__comment" id="storyCommentItem-1"">
+		<div id="storyCommentList-${image.id}">`;
+			image.comments.forEach((comment)=>{
+				item += `<div class="sl__item__contents__comment" id="storyCommentItem-${comment.id}">
 				<p>
-					<b>Lovely :</b> 부럽습니다.
+					<b>${comment.user.username} :</b> ${comment.content}
 				</p>
 
 				<button>
 					<i class="fas fa-times"></i>
 				</button>
-
-			</div>
-
+			</div>`;
+			});
+			
+		item += `
 		</div>
 
 		<div class="sl__item__input">
@@ -160,22 +161,23 @@ function addComment(imageId) {
 		contentType: "application/json; charset=utf-8",
 		dataType: "json"
 	}).done(res=>{ // res에는 통신에 결과가 담김
-		console.log("성공", res);
+		//console.log("성공", res);
+		let comment = res.data;
+		
+		let content = `
+			  <div class="sl__item__contents__comment" id="storyCommentItem-${comment.id}"> 
+			    <p>
+			      <b>${comment.user.username} :</b>
+			      ${comment.content}
+			    </p>
+			    <button><i class="fas fa-times"></i></button>
+			  </div>`;
+	commentList.prepend(content); // append는 뒤에다가 prepend는 앞에다가
 	}).fail(error=>{
 		console.log("오류", error);
 	});
 
-	let content = `
-			  <div class="sl__item__contents__comment" id="storyCommentItem-2""> 
-			    <p>
-			      <b>GilDong :</b>
-			      댓글 샘플입니다.
-			    </p>
-			    <button><i class="fas fa-times"></i></button>
-			  </div>
-	`;
-	commentList.prepend(content); // append는 뒤에다가 prepend는 앞에다가
-	commentInput.val("");
+	commentInput.val(""); // 인풋 필드를 깨끗하게 비워준다.
 }
 
 // (5) 댓글 삭제
