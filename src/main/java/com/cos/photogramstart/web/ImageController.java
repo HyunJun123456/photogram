@@ -41,7 +41,7 @@ public class ImageController {
 	
 	@PostMapping("/image")
 	public String imageUpload(ImageUploadDto imageUploadDto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-		if(imageUploadDto.getFile().isEmpty()) {
+		if(imageUploadDto.getFile().isEmpty()) { // 공통 처리 로직이 아니기 때문에 내비둠
 			throw new CustomValidationException("이미지가 첨부되지 않았습니다.", null);
 		}
 		// 서비스 호출

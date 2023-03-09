@@ -43,4 +43,7 @@ public class UserController {
  * 1. fk는 Many가 가진다.
  * 2. N : N의 관계는 중간 테이블이 생긴다.
  * 
+ * AOP 처리
+ * Aspect Orientied Programming 관점 지향 프로그램
+ * 
  * */
