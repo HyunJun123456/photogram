@@ -46,4 +46,11 @@ public class UserController {
  * AOP 처리
  * Aspect Orientied Programming 관점 지향 프로그램
  * 
+ * 
+ * Facebook 로그인
+ * OAuth2 - Client
+ * Open auth => 인증 오픈
+ * 1. 앱등록
+ * 2. 프로젝트 - 정보저장
+ * code -> Access Token -> email, public_profile -> 강제 회원가입 -> 로그인
  * */
